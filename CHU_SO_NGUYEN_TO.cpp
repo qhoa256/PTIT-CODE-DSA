@@ -12,24 +12,21 @@ void init() {
 	a[4] = 7;
 }
 
-bool check() {
-	int cnt[1005]={0};
-	for (int i = 1; i <= n; i++) {
-		cnt[x[i]]++;
-	}
-	return cnt[2] != 0 && cnt[3] != 0 && cnt[5] != 0 && cnt[7] != 0 && x[n] != 2;
-}
+map<int,int> h;
+
 void Try(int i) {
 	for (int j = 1; j <= 4; j++) {
 		x[i] = a[j];
+		h[x[i]] ++;
 		if (i == n) {
-			if (check()) {
+			if (h[2] > 0 && h[3] > 0 && h[5] > 0 && h[7] > 0 && x[n] != 2) {
 				for (int k = 1; k <= n; k++) {
 					cout << x[k];
 				}
 				cout << endl;
 			}
 		} else Try(i + 1);
+		h[x[i]] --;
 	}
 }
 int main()
