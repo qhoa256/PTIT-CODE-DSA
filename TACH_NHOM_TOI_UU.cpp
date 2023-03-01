@@ -16,11 +16,12 @@ int main()
 	int n, k;
 	cin >> n >> k;
 	int a[n];
-	int res = 1;
+	int res=0;
 	for (auto &x : a) cin >> x;
 	sort(a, a + n);
-	for (int i = 1; i < n; i++) {
-		if (a[i] - a[i - 1] > k) res++;
+	if (a[1] - a[0] <= k) res++;
+	for (int i = 1; i < n - 1; i++) {
+		if (a[i + 1] - a[i] > k) res++;
 	}
 	cout << res;
 	return 0;
