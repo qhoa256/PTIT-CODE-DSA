@@ -5,7 +5,6 @@ using namespace std;
 using ll = long long;
 
 int n, x[1005], a[1005];
-
 void init() {
 	a[1] = 2;
 	a[2] = 3;
