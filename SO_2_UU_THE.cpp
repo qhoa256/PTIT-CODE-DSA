@@ -42,8 +42,8 @@ int main()
 		int x;
 		cin >> x;
 		int dem = 0;
-		for (auto y : v) {
-			cout << y << " ";
+		for (auto h : v) {
+			cout << h << " ";
 			dem++;
 			if (dem == x) break;
 		}
