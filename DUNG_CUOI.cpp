@@ -7,6 +7,7 @@ using ll = long long;
 int n;
 string s[1005];
 string tmp;
+
 int main()
 {
 #ifndef ONLINE_JUDGE
