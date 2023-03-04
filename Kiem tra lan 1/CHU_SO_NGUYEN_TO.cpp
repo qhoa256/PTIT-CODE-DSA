@@ -43,6 +43,7 @@ int main()
 	for (int i = 4; i <= n; i++) {
 		m = i;
 		Try(1);
+		//memset(cnt, 0, sizeof(cnt));
 	}
 	return 0;
 }
