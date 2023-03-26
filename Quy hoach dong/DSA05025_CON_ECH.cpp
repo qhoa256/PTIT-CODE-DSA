@@ -4,6 +4,7 @@ using namespace std;
 
 using ll = long long;
 
+long dp[1005];
 int main()
 {
 #ifndef ONLINE_JUDGE
@@ -16,26 +17,18 @@ int main()
 	int t;
 	cin >> t;
 	while (t--) {
-		int n, v;
-		cin >> n >> v;
-		int w[n + 1], c[n + 1];
-		for (int i = 1; i <= n; i++) {
-			cin >> w[i];
-		}
-		for (int i = 1; i <= n; i++) {
-			cin >> c[i];
-		}
-		int dp[1005][1005];
+		int n;
+		cin >> n;
 		memset(dp, 0, sizeof(dp));
+		dp[0] = 1;
 		for (int i = 1; i <= n; i++) {
-			for (int j = 0; j <= v; j++) {
-				dp[i][j] = dp[i - 1][j];
-				if (j >= w[i]) {
-					dp[i][j] = max(dp[i][j], dp[i - 1][j - w[i]] + c[i]);
+			for (int j = 1; j <= min(i, 3); j++) {
+				if (i >= j) {
+					dp[i] += dp[i - j];
 				}
 			}
 		}
-		cout << dp[n][v] << endl;
+		cout << dp[n] << endl;
 	}
 	return 0;
 }

@@ -4,7 +4,8 @@ using namespace std;
 
 using ll = long long;
 
-int t, n, a[1000005], F[1000005];
+ll sum[1000005];
+
 int main()
 {
 #ifndef ONLINE_JUDGE
@@ -14,20 +15,21 @@ int main()
 	ios::sync_with_stdio(0);
 	cin.tie(0);
 	cout.tie(0);
+	int t;
 	cin >> t;
 	while (t--) {
+		memset(sum, 0, sizeof(sum));
+		int n;
 		cin >> n;
-		for (int i = 0; i < n; i++) {
+		int a[n + 1];
+		for (int i = 1; i <= n; i++) {
 			cin >> a[i];
 		}
-		for (int i = 0; i < n; i++) {
-			F[i] = 1;
-			for (int j = 0; j < i; j++) {
-				if (a[j] <= a[i])
-					F[i] = max(F[i], F[j] + 1);
-			}
+		sum[1] = a[1];
+		for (int i = 2; i <= n; i++) {
+			sum[i] = max(sum[i - 1], sum[i - 2] + a[i]);
 		}
-		cout << n - *max_element(F, F + n) << endl;
+		cout << sum[n] << endl;
 	}
 	return 0;
 }
