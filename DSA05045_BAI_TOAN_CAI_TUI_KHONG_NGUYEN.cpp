@@ -38,7 +38,7 @@ int main()
 			sum_value += ks[i].value;
 			i++;
 		}
-		if (sum_weight > v) sum_value -= ks[i - 1].value;
+		if (sum_weight > v) sum_weight -= ks[i - 1].value;
 		cout << fixed << setprecision(2) << sum_value << endl;
 	}
 	return 0;
