@@ -4,8 +4,6 @@ using namespace std;
 
 using ll = long long;
 
-//Sort theo vi tri cuoi va day con tang dai nhat
-//Dãy con tăng dài nhất
 int main()
 {
 #ifndef ONLINE_JUDGE
@@ -20,19 +18,16 @@ int main()
 	while (t--) {
 		int n;
 		cin >> n;
-		pair<int, int>p[n];
-		for (int i = 0; i < n; i++) {
-			cin >> p[i].first >> p[i].second;
-		}
-		sort(p, p + n, [](pair<int, int>a, pair<int, int>b)->bool{
-			return a.second < b.second;
-		});
-		int dp[1005];
+		double a[n], b[n];
 		int ans = 1;
+		int dp[1005] = {0};
+		for (int i = 0; i < n; i++) {
+			cin >> a[i] >> b[i];
+		}
 		for (int i = 0; i < n; i++) {
 			dp[i] = 1;
 			for (int j = 0; j < i; j++) {
-				if (p[j].second < p[i].first) {
+				if (a[i] > a[j] && b[j] > b[i]) {
 					dp[i] = max(dp[i], dp[j] + 1);
 				}
 			}
