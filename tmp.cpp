@@ -2,57 +2,37 @@
 
 using namespace std;
 
-using ll = long long;
-
-bool binary_search(vector<ll> v, ll l, ll r, ll x)
-{
-    while (l <= r)
-    {
-        ll m = (l + r) / 2;
-        if (v[m] == x)
-            return true;
-        ++l;
-        --r;
-    }
-    return false;
-}
 int main()
 {
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
-    ifstream in;
-    in.open("Data.txt");
-    if (in.is_open())
+    int t;
+    cin >> t;
+    while(t--)
     {
-        string s;
-        stringstream ss(s);
-        string tmp;
-        vector<ll> v;
-        while (ss >> tmp)
+        int n, s;
+        int k;
+        cin >> n >> s >> k;
+        int a[n+5], f[n+5];
+        for(int i = 1; i <= n; ++i)
         {
-            v.push_back(stoll(tmp));
+            cin >> a[i];
+            f[i] = a[i];
+            if(i > 1) f[i] += f[i-1];
         }
-        for (int i = 0; i < v.size(); i++)
+
+        int res = -1;
+        if(f[s] <= k) res = 1;
+        else 
         {
-            for (int j = 0; j < v.size() - i; j++)
+            for(int i = 1; i < s; ++i)
             {
-                if (v[j] > v[j + 1])
+                if(f[s] - f[i] <= k) 
                 {
-                    swap(v[j], v[j + 1]);
+                    res = i+1;
+                    break;
                 }
             }
-            for (int i = 0; i < v.size(); i++)
-            {
-                cout << v[i] << " ";
-            }
         }
-        ll x;
-        cin >> x;
-        if (binary_search(v, 0, v.size() - 1, x))
-            cout << "YES";
-        else
-            cout << "NO";
+        cout << res << '\n';
     }
     return 0;
 }
