@@ -72,6 +72,9 @@ int main()
 			cout << pos << endl;
 		else cout << 0 << endl;
 		memset(visited, false, sizeof(visited));
+		for (int i = 1; i <= n; i++) {
+			adj[i].clear();
+		}
 	}
 	return 0;
 }
