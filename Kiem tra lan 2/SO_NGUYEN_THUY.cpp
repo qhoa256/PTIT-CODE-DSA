@@ -13,12 +13,16 @@ void init() {
 	while (1) {
 		string top = q.front();
 		q.pop();
-		if (top.size() == 10) break;
-		v.push_back(top);
 		string tmp = top;
 		reverse(tmp.begin(), tmp.end());
-		q.push(top + tmp);
-		q.push(top + top);
+		string x = "";
+		x += top + tmp;
+		if (x != "45" && x != "54") {
+			v.push_back(x);
+		}
+		if (v.size() > 10000) break;
+		q.push(top + "4");
+		q.push(top + "5");
 	}
 }
 int main()
@@ -34,8 +38,10 @@ int main()
 	int t;
 	cin >> t;
 	while (t--) {
-		for(auto x:v){
-			cout<<x<<" ";
+		int n;
+		cin >> n;
+		for (int i = 0; i < n; i++) {
+			cout << v[i] << " ";
 		}
 		cout << endl;
 	}
