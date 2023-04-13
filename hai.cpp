@@ -46,6 +46,7 @@ int main()
 		}
 		int ans = 0;
 		int pos = 0;
+		int ok = 0;
 		for (int i = 1; i <= n; i++)
 		{
 			visited[i] = 1;
@@ -59,6 +60,7 @@ int main()
 				}
 			}
 			if (dem > tplt) {
+				ok = 1;
 				if (ans < dem) {
 					ans = dem;
 					pos = i;
@@ -66,7 +68,9 @@ int main()
 			}
 			memset(visited, false, sizeof(visited));
 		}
-		cout << pos << endl;
+		if (ok)
+			cout << pos << endl;
+		else cout << 0 << endl;
 		memset(visited, false, sizeof(visited));
 	}
 	return 0;
