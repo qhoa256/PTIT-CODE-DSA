@@ -35,37 +35,38 @@ int main()
 			adj[x].push_back(y);
 			adj[y].push_back(x);
 		}
-		int cnt = 0;
+		int tplt = 0;
 		for (int i = 1; i <= n; i++)
 		{
 			if (!visited[i])
 			{
-				cnt++;
+				tplt++;
 				DFS(i);
 			}
 		}
-		if (cnt == 0) {
-			cout << 0 << endl;
-		} else {
-			int ans = 0;
-			for (int i = 1; i <= n; i++)
+		int ans = 0;
+		int pos = 0;
+		for (int i = 1; i <= n; i++)
+		{
+			visited[i] = 1;
+			int dem = 0;
+			for (int j = 1; j <= n; j++)
 			{
-				visited[i] = 1;
-				int dem = 0;
-				for (int j = 1; j <= n; j++)
+				if (!visited[j])
 				{
-					if (!visited[j])
-					{
-						dem++;
-						DFS(j);
-					}
+					dem++;
+					DFS(j);
 				}
-				memset(visited, false, sizeof(visited));
-				if (dem > cnt)
-					ans = max(ans, dem);
 			}
-			cout << ans << endl;
+			if (dem > tplt) {
+				if (ans < dem) {
+					ans = dem;
+					pos = i;
+				}
+			}
+			memset(visited, false, sizeof(visited));
 		}
+		cout << pos << endl;
 		memset(visited, false, sizeof(visited));
 	}
 	return 0;

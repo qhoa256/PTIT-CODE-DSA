@@ -1,56 +1,73 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 
-void solve(string s)
+using ll = long long;
+
+int t, n, m;
+vector<int> adj[1000001];
+int visited[1000001];
+
+void DFS(int u)
 {
-	map<int, int> mp;
-	for (int i = 0; i < s.size(); i++)
+	visited[u] = 1;
+	for (auto x : adj[u])
 	{
-		if (s[i] == '(' || s[i] == ')')
-			mp[i] = -1;
-		else mp[i] = 2;
-	}
-
-	stack<pair<char, int>> st;
-
-	for (int i = 0; i < s.size(); i++)
-	{
-		if (s[i] == '(')
-		{
-			st.push({'(', i});
-		}
-		else if (s[i] == ')')
-		{
-			if (!st.empty() && st.top().first == '(')
-			{
-				mp[st.top().second] = 0;
-				mp[i] = 1;
-				st.pop();
-			}
-		}
-	}
-
-	for (int i = 0; i < s.size(); i++)
-	{
-		if (mp[i] == 2)
-			cout << s[i];
-		else cout << mp[i];
+		if (!visited[x])
+			DFS(x);
 	}
 }
-
 int main()
 {
 #ifndef ONLINE_JUDGE
 	freopen("input.txt", "r", stdin);
 	freopen("output.txt", "w", stdout);
 #endif
-	int t;
+	ios::sync_with_stdio(false);
+	cin.tie(nullptr);
+	cout.tie(nullptr);
 	cin >> t;
-	while (t--)
-	{
-		string s;
-		cin >> s;
-		solve(s);
-		cout << endl;
+	while (t--) {
+		cin >> n >> m;
+		for (int i = 0; i < m; i++)
+		{
+			int x, y;
+			cin >> x >> y;
+			adj[x].push_back(y);
+			adj[y].push_back(x);
+		}
+		int tplt = 0;
+		for (int i = 1; i <= n; i++)
+		{
+			if (!visited[i])
+			{
+				tplt++;
+				DFS(i);
+			}
+		}
+		int ans = 0;
+		int pos = 0;
+		for (int i = 1; i <= n; i++)
+		{
+			visited[i] = 1;
+			int dem = 0;
+			for (int j = 1; j <= n; j++)
+			{
+				if (!visited[j])
+				{
+					dem++;
+					DFS(j);
+				}
+			}
+			if (dem > tplt) {
+				if (ans < dem) {
+					ans = dem;
+					pos = i;
+				}
+			}
+			memset(visited, false, sizeof(visited));
+		}
+		cout << pos << endl;
+		memset(visited, false, sizeof(visited));
 	}
+	return 0;
 }
