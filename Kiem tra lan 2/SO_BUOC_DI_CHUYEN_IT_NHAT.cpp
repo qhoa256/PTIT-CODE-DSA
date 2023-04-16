@@ -74,6 +74,8 @@ int main()
 			}
 		}
 		BFS();
+		memset(visited, 0, sizeof(visited));
+		memset(A, 0, sizeof(A));
 	}
 	return 0;
 }
