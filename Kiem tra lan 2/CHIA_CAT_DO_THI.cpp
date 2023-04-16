@@ -44,6 +44,7 @@ int main()
 				DFS(i);
 			}
 		}
+		memset(visited, 0, sizeof(visited));
 		int ans = 0;
 		int pos = 0;
 		int ok = 0;

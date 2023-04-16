@@ -59,6 +59,7 @@ int main()
 			DFS(i);
 		}
 	}
+	memset(visited, 0, sizeof(visited));
 	int tru = 0; // Dinh tru
 	for (int i = 1; i <= n; i++)
 	{
