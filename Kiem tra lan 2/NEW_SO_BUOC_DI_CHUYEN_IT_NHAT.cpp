@@ -30,31 +30,31 @@ int BFS() {
 				if (a + 1 <= n)
 				{
 					step1 = abs(A[a + 1][b] - A[a][b]);
-				}
-				if (!visited[a + step1][b] && (a + step1 <= n) && step1)
-				{
-					q.push({{a + step1, b}, x.second + 1});
-					visited[a + step1][b] = 1;
+					if (!visited[a + step1][b] && (a + step1 <= n) && step1)
+					{
+						q.push({{a + step1, b}, x.second + 1});
+						visited[a + step1][b] = 1;
+					}
 				}
 			} else if (k == 1) {
 				if (b + 1 <= m)
 				{
 					step2 = abs(A[a][b + 1] - A[a][b]);
-				}
-				if (!visited[a][b + step2] && (b + step2 <= m) && step2)
-				{
-					q.push({{a, b + step2}, x.second + 1});
-					visited[a][b + step2] = 1;
+					if (!visited[a][b + step2] && (b + step2 <= m) && step2)
+					{
+						q.push({{a, b + step2}, x.second + 1});
+						visited[a][b + step2] = 1;
+					}
 				}
 			} else {
 				if (a + 1 <= n && b + 1 <= m)
 				{
 					step3 = abs(A[a][b] - A[a + 1][b + 1]);
-				}
-				if (!visited[a + step3][b + step3] && (a + step3 <= n) && (b + step3 <= m) && step3)
-				{
-					q.push({{a + step3, b + step3}, x.second + 1});
-					visited[a + step3][b + step3] = 1;
+					if (!visited[a + step3][b + step3] && (a + step3 <= n) && (b + step3 <= m) && step3)
+					{
+						q.push({{a + step3, b + step3}, x.second + 1});
+						visited[a + step3][b + step3] = 1;
+					}
 				}
 			}
 		}
