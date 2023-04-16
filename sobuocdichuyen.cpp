@@ -4,57 +4,54 @@ using namespace std;
 
 using ll = long long;
 
-int dx[3] = {1, 0, 1};
-int dy[3] = {0, 1, 1};
-
 int t, n, m;
 
-int visited[1005][1005], A[1005][1005];
+int A[1005][1005];
 int dp[1005][1005];
-int res = 1e9;
 void BFS() {
-	queue<pair<pair<int, int>, int>>q;
-	q.push({{1, 1}, 0});
-	visited[1][1] = 1;
+	queue<pair<int, int>>q;
+	q.push({1, 1});
+	dp[1][1] = 0;
 	while (!q.empty()) {
 		auto x = q.front();
 		q.pop();
-		int a = x.first.first, b = x.first.second;
+		int a = x.first, b = x.second;
 		if (a == n && b == m) {
-			cout << x.second << endl;
-			return;
+			break;
 		}
 		int a1, b1;
 		if (a + 1 <= n)
 		{
-			a1 = a + abs(A[a + 1][b] - A[a][b]), b1 = b;
-			if (!visited[a1][b1] && a1 <= n)
+			a1 = a + abs(A[a][b] - A[a + 1][b]), b1 = b;
+			if (dp[a1][b1] == 1e9 && a1 <= n)
 			{
-				q.push({{a1, b1}, x.second + 1});
-				visited[a1][b1] = 1;
+				dp[a1][b1] = dp[a][b] + 1;
+				q.push({a1, b1});
 			}
 		}
 		if (b + 1 <= m)
 		{
-			a1 = a; b1 = b + abs(A[a][b + 1] - A[a][b]);
-			if (!visited[a1][b1] && b1 <= m)
+			a1 = a; b1 = b + abs(A[a][b] - A[a][b + 1]);
+			if (dp[a1][b1] == 1e9 && b1 <= m)
 			{
-				q.push({{a1, b1}, x.second + 1});
-				visited[a1][b1] = 1;
+				dp[a1][b1] = dp[a][b] + 1;
+				q.push({a1, b1});
 			}
 		}
 		if (a + 1 <= n && b + 1 <= m)
 		{
 			a1 = a + abs(A[a][b] - A[a + 1][b + 1]);
 			b1 = b + abs(A[a][b] - A[a + 1][b + 1]);
-			if (!visited[a1][b1] && (a1 <= n) && (b1 <= m))
+			if (dp[a1][b1] == 1e9 && (a1 <= n) && (b1 <= m))
 			{
-				q.push({{a1, b1}, x.second + 1});
-				visited[a1][b1] = 1;
+				dp[a1][b1] = dp[a][b] + 1;
+				q.push({a1, b1});
 			}
 		}
 	}
-	cout << -1 << endl;
+	if (dp[n][m] == 1e9) cout << -1;
+	else cout << dp[n][m];
+	cout << endl;
 	return;
 }
 int main()
@@ -72,11 +69,10 @@ int main()
 		for (int i = 1; i <= n; i++) {
 			for (int j = 1; j <= m; j++) {
 				cin >> A[i][j];
+				dp[i][j] = 1e9;
 			}
 		}
 		BFS();
-		memset(visited, 0, sizeof(visited));
-		memset(A, 0, sizeof(A));
 	}
 	return 0;
 }

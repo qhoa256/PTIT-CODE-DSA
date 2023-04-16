@@ -7,11 +7,10 @@ using ll = long long;
 int dx[3] = {1, 0, 1};
 int dy[3] = {0, 1, 1};
 
-int t, n, m;
+int n, m;
 
 int visited[1005][1005], A[1005][1005];
-int dp[1005][1005];
-int res = 1e9;
+
 void BFS() {
 	queue<pair<pair<int, int>, int>>q;
 	q.push({{1, 1}, 0});
@@ -19,39 +18,38 @@ void BFS() {
 	while (!q.empty()) {
 		auto x = q.front();
 		q.pop();
-		int a = x.first.first, b = x.first.second;
-		if (a == n && b == m) {
+		if (x.first.first == n && x.first.second == m) {
 			cout << x.second << endl;
 			return;
 		}
-		int a1, b1;
+		int a = x.first.first, b = x.first.second;
+		int step1 = 0, step2 = 0, step3 = 0;
 		if (a + 1 <= n)
 		{
-			a1 = a + abs(A[a + 1][b] - A[a][b]), b1 = b;
-			if (!visited[a1][b1] && a1 <= n)
-			{
-				q.push({{a1, b1}, x.second + 1});
-				visited[a1][b1] = 1;
-			}
+			step1 = abs(A[a + 1][b] - A[a][b]);
 		}
 		if (b + 1 <= m)
 		{
-			a1 = a; b1 = b + abs(A[a][b + 1] - A[a][b]);
-			if (!visited[a1][b1] && b1 <= m)
-			{
-				q.push({{a1, b1}, x.second + 1});
-				visited[a1][b1] = 1;
-			}
+			step2 = abs(A[a][b + 1] - A[a][b]);
 		}
 		if (a + 1 <= n && b + 1 <= m)
 		{
-			a1 = a + abs(A[a][b] - A[a + 1][b + 1]);
-			b1 = b + abs(A[a][b] - A[a + 1][b + 1]);
-			if (!visited[a1][b1] && (a1 <= n) && (b1 <= m))
-			{
-				q.push({{a1, b1}, x.second + 1});
-				visited[a1][b1] = 1;
-			}
+			step3 = abs(A[a][b] - A[a + 1][b + 1]);
+		}
+		if (!visited[a + step1][b] && (a + step1 <= n) && step1)
+		{
+			q.push({{a + step1, b}, x.second + 1});
+			visited[a + step1][b] = 1;
+		}
+		if (!visited[a][b + step2] && (b + step2 <= m) && step2)
+		{
+			q.push({{a, b + step2}, x.second + 1});
+			visited[a][b + step2] = 1;
+		}
+		if (!visited[a + step3][b + step3] && (a + step3 <= n) && (b + step3 <= m) && step3)
+		{
+			q.push({{a + step3, b + step3}, x.second + 1});
+			visited[a + step3][b + step3] = 1;
 		}
 	}
 	cout << -1 << endl;
@@ -66,6 +64,7 @@ int main()
 	ios::sync_with_stdio(0);
 	cin.tie(0);
 	cout.tie(0);
+	int t;
 	cin >> t;
 	while (t--) {
 		cin >> n >> m;
