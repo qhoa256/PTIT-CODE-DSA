@@ -1,82 +1,47 @@
-#include <bits/stdc++.h>
-
+#include<bits/stdc++.h>
 using namespace std;
 
-using ll = long long;
+int ke[100][100], deg[100], color[100];
 
-int dx[3] = {1, 0, 1};
-int dy[3] = {0, 1, 1};
-
-int t, n, m;
-
-int visited[1005][1005], A[1005][1005];
-int dp[1005][1005];
-int res = 1e9;
-void BFS() {
-	queue<pair<pair<int, int>, int>>q;
-	q.push({{1, 1}, 0});
-	visited[1][1] = 1;
-	while (!q.empty()) {
-		auto x = q.front();
-		q.pop();
-		int a = x.first.first, b = x.first.second;
-		if (a == n && b == m) {
-			cout << x.second << endl;
-			return;
-		}
-		int a1, b1;
-		if (a + 1 <= n)
-		{
-			a1 = a + abs(A[a + 1][b] - A[a][b]), b1 = b;
-			if (!visited[a1][b1] && a1 <= n)
-			{
-				q.push({{a1, b1}, x.second + 1});
-				visited[a1][b1] = 1;
-			}
-		}
-		if (b + 1 <= m)
-		{
-			a1 = a; b1 = b + abs(A[a][b + 1] - A[a][b]);
-			if (!visited[a1][b1] && b1 <= m)
-			{
-				q.push({{a1, b1}, x.second + 1});
-				visited[a1][b1] = 1;
-			}
-		}
-		if (a + 1 <= n && b + 1 <= m)
-		{
-			a1 = a + abs(A[a][b] - A[a + 1][b + 1]);
-			b1 = b + abs(A[a][b] - A[a + 1][b + 1]);
-			if (!visited[a1][b1] && (a1 <= n) && (b1 <= m))
-			{
-				q.push({{a1, b1}, x.second + 1});
-				visited[a1][b1] = 1;
-			}
-		}
-	}
-	cout << -1 << endl;
-	return;
+bool cmp(pair<int, int>a, pair<int, int>b) {
+	return a.second > b.second; //Dinh co bac lon hon thi xet truoc
 }
-int main()
-{
-#ifndef ONLINE_JUDGE
-	freopen("input.txt", "r", stdin);
-	freopen("output.txt", "w", stdout);
-#endif
-	ios::sync_with_stdio(0);
-	cin.tie(0);
-	cout.tie(0);
+
+int main() {
+	int t;
 	cin >> t;
 	while (t--) {
-		cin >> n >> m;
-		for (int i = 1; i <= n; i++) {
-			for (int j = 1; j <= m; j++) {
-				cin >> A[i][j];
+		memset(deg, 0, sizeof(deg));
+		memset(color, 0, sizeof(color));
+		memset(ke, 0, sizeof(ke));
+		int v, e, m;//v: dinh, e: canh, m: so mau toi da duoc phep de to do thi
+		cin >> v >> e >> m;
+		while (e--) {
+			int x, y;
+			cin >> x >> y;
+			ke[x][y] = ke[y][x] = 1;
+			deg[x]++; deg[y]++;
+		}
+		vector<pair<int, int>>ds;
+		for (int i = 1; i <= v; i++) ds.push_back({i, deg[i]});
+		sort(ds.begin(), ds.end(), cmp);
+		int cnt = 0;
+		//Moi lan se chon ra dinh co bac to nhat de to mau (Neu to roi thi thoi)
+
+		for (auto i : ds) {
+			int x = i.first; //Dinh duoc xet
+			if (color[x] == 0) { //Dinh ay chua duoc to mau
+				cnt++;
+				//To mau thu cnt cho dinh duoc xet
+				color[x] = cnt;
+				//Bay gio to chinh mau ay cho cac dinh khong ke voi dinh duoc xet ma chua duoc to
+				for (int j = 1; j <= v; j++) {
+					if (color[j] == 0 && ke[x][j] == 0) color[j] = cnt;
+				}
 			}
 		}
-		BFS();
-		memset(visited, 0, sizeof(visited));
-		memset(A, 0, sizeof(A));
+
+		if (cnt <= m) cout << "YES" << endl;
+		else cout << "NO" << endl;
 	}
-	return 0;
 }
