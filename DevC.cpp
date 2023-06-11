@@ -1,5 +1,6 @@
 #include<bits/stdc++.h>
 using namespace std;
+using ll=long long;
 
 int main(){
 	int t;
@@ -12,16 +13,17 @@ int main(){
 			if(isalpha(s[i])){
 				st.push(string(1,s[i]));
 			}else{
+				string tmp="";
 				string x=st.top();
 				st.pop();
 				string y=st.top();
 				st.pop();
-				st.push(x+y+s[i]);
+				tmp+="("+x+s[i]+y+")";
+				st.push(tmp);
 			}
 		}
 		cout<<st.top()<<endl;
 	}
-	return 0;
 }
 
 /*
@@ -29,6 +31,6 @@ int main(){
 *+AB-CD
 *-A/BC-/AKL
 
-AB+CD-*
-ABC/-AK/L-*
+((A+B)*(C-D))
+((A-(B/C))*((A/K)-L)
 */
