@@ -1,50 +1,53 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
-using ll=long long;
 
-void right(int a[],int n,int r[]){
-    stack<int>st;
-    for(int i=0;i<n;i++){
-        while(!st.empty() && a[i]<a[st.top()]){
-            r[st.top()]=i;
-            st.pop();
-        }
-        st.push(i);
-    }
-    while(!st.empty()){
-        r[st.top()]=n;
-        st.pop();
+using ll = long long;
+
+int n, k, a[1000001], ok = 1;
+
+void init()
+{
+    for (int i = 1; i <= k; i++)
+    {
+        a[i] = 1;
     }
 }
 
-void left(int a[],int n,int l[]){
-    stack<int>st;
-    for(int i=n-1;i>=0;i--){
-        while(!st.empty() && a[i]<a[st.top()]){
-            l[st.top()]=i;
-            st.pop();
+void sinh()
+{
+    int i = k;
+    while (i >= 1 && a[i] == n)
+        --i;
+    if (i == 0)
+        ok = 0;
+    else
+    {
+        a[i]++;
+        for (int j = i + 1; j <= k; j++)
+        {
+            a[j] = 1;
         }
-        st.push(i);
-    }
-    while(!st.empty()){
-        l[st.top()]=-1;
-        st.pop();
     }
 }
-int main(){
-        int n;
-        cin>>n;
-        int a[n];
-        for(auto &x:a) cin>>x;
-        int l[n],r[n];
-        left(a,n,l);
-        right(a,n,r);
-        ll res=0;
-        for(int i=0;i<n;i++){
-               ll tmp=1ll*a[i]*(r[i]-l[i]-1);
-               res=max(res,tmp);
+int main()
+{
+#ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+#endif
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+    cin >> n >> k;
+    init();
+    while (ok)
+    {
+        for (int i = 1; i <= k; i++)
+        {
+            cout << a[i];
         }
-        cout<<res<<endl;
+        cout << endl;
+        sinh();
+    }
     return 0;
 }
- 
