@@ -16,18 +16,21 @@ int main()
 	cout.tie(0);
 	int t;
 	cin >> t;
-	cin.ignore();
-	int cnt1 = 0, cnt2 = 0;
 	while (t--) {
 		string s;
-		getline(cin, s);
-		stringstream ss(s);
-		string tmp;
-		vector<string>v;
-		while (ss >> tmp) {
-			v.push_back(tmp);
+		cin >> s;
+		stack<int>st;
+		int res = 0;
+		for (int i = 0; i < s.size(); i++) {
+			if (s[i] == '(') st.push(s[i]);
+			else {
+				if (!st.empty()) {
+					st.pop();
+					res += 2;
+				}
+			}
 		}
-		
+		cout << res << endl;
 	}
 	return 0;
 }
