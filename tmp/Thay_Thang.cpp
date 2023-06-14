@@ -1,1 +1,0 @@
-Thay_Thang.cpp
