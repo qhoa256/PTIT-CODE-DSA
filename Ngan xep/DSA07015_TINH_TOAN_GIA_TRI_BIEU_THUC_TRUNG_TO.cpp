@@ -5,40 +5,94 @@ using namespace std;
 
 using ll = long long;
 
-int order(char c) {
-	if (c == '+' || c == '-') return 1;
-	else if (c == '*' | c == '/') return 2;
-	else if (c == '^') return 3;
-	else return 0;
+ll value1(string c)
+{
+	if (c == "^")
+		return 3;
+	if (c == "/" || c == "*")
+		return 2;
+	if (c == "+" || c == "-")
+		return 1;
+	return 0;
 }
-
-void hauTo(string s) {
-	string res = "";
-	stack<char>st;
-	for (int i = 0; i < s.size(); i++) {
-		if (isalpha(s[i])) res += s[i];
-		else if (s[i] == '(') st.push(s[i]);
-		else if (s[i] == ')') {
-			while (!st.empty() && st.top() != '(') {
-				res += st.top();
-				st.pop();
+vector<string> converse(vector<string> v)
+{
+	vector<string> res;
+	stack<string> st;
+	for (ll i = 0; i < v.size(); i++)
+	{
+		if (isdigit(v[i][0]))
+		{
+			res.push_back(v[i]);
+		}
+		else
+		{
+			if (v[i] == "(")
+				st.push(v[i]);
+			else
+			{
+				if (v[i] == ")")
+				{
+					while (st.size() && (st.top() != "("))
+					{
+						res.push_back(st.top());
+						st.pop();
+					}
+					st.pop();
+				}
+				else
+				{
+					while (st.size() && value1(st.top()) >= value1(v[i]))
+					{
+						res.push_back(st.top());
+						st.pop();
+					}
+					st.push(v[i]);
+				}
 			}
-			st.pop();
-		} else {
-			while (!st.empty() && order(st.top()) >= order(s[i])) {
-				res += st.top();
-				st.pop();
-			}
-			st.push(s[i]);
 		}
 	}
-	while (!st.empty()) {
-		if (st.top() != '(') res += st.top();
+	while (st.size())
+	{
+		res.push_back(st.top());
 		st.pop();
 	}
-	cout << res << endl;
-	//return res;
+	return res;
 }
+ll calc(ll x, ll y, string c)
+{
+	if (c == "+")
+		return x + y;
+	if (c == "-")
+		return x - y;
+	if (c == "*")
+		return x * y;
+	if (c == "/")
+		return (ll)x / y;
+	return 0;
+}
+ll value(vector<string> v)
+{
+	stack<ll> st;
+	for (ll i = 0; i < v.size(); i++)
+	{
+		if (isdigit(v[i][0]))
+		{
+			st.push(stoll(v[i]));
+		}
+		else
+		{
+			ll top1 = st.top();
+			st.pop();
+			ll top2 = st.top();
+			st.pop();
+			ll res = calc(top2, top1, v[i]);
+			st.push(res);
+		}
+	}
+	return st.top();
+}
+
 int main()
 {
 #ifndef ONLINE_JUDGE
@@ -48,13 +102,33 @@ int main()
 	ios::sync_with_stdio(0);
 	cin.tie(0);
 	cout.tie(0);
-	int t;
+	ll t;
 	cin >> t;
-	while (t--) {
+	cin.ignore(1);
+	while (t--)
+	{
 		string s;
-		cin >> s;
-		hauTo(s);
-		//cout << hauTo(s) << endl;
+		getline(cin, s);
+		vector<string> v;
+		for (ll i = 0; i < s.size(); i++)
+		{
+
+			if (isdigit(s[i]))
+			{
+				string tam = "";
+				while (i < s.size() && isdigit(s[i]))
+				{
+					tam += s[i];
+					i++;
+				}
+				v.push_back(tam);
+				i--;
+			}
+			else
+				v.push_back(string(1, s[i]));
+		}
+		v = converse(v);
+		cout << value(v) << endl;
 	}
 	return 0;
 }

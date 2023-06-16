@@ -1,107 +1,30 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <iomanip>
+#define ll long long
+#define p(x) pair<x, x>
+#define v(x) vector<x>
+#define FORD(i, l, r) for (int i = l; i < r; i++)
+#define FORE(i, l, r) for (int i = r - 1; i >= 0; i--)
+#define correct(x, y, n, m) (0 <= (x) && (x) < (n) && 0 <= (y) && (y) < (m))
+#define sz size();
+#define all(M) M.begin(), M.end()
+#define f first
+#define s second
+#define pb push_back
+#define pf push_font
 using namespace std;
 
-/*
-- Đề bài: Cho mảng X[] gồm n phần tử và mảng Y[] gồm m phần tử. Hãy đếm số các cặp x^y > y^x, trong đó x€X[] và y€Y[].
-Ví dụ X[] = {2, 1, 6 }, Y[] = {1, 5} ta có kết quả là 3 cặp (2, 1), (2, 5), (6, 1).
-
-Input:
-1
-3 2
-2 1 6
-1 5
-Output:
-3
-
-Kiến thức:
-    + Nếu x < y thì x^y > y^x trừ các cặp (2, 3) và (2, 4)
-    + Ngoại lệ x > y thì x^y > y^x đó là Trường hợp:
-        - (3, 2) vì 3 > 2 nên 3^2 > 2^3
-*/
-
-// Hàm tìm vị trí đầu tiên > x trong mảng đã được sort.
-int upper(int a[], int l, int r, int x)
+struct X
 {
-    int res = -1;
-    while (l <= r)
-    {
-        int m = (l + r) / 2;
-        if (a[m] > x)
-        {
-            res = m;
-            // Tìm về phía trước xem có phần tử ở vị trí trước nữa mà còn > x hay không.
-            r = m - 1;
-        }
-        // Nếu nhỏ hơn thì phải tìm sang bên phải để tìm được ptu > x.
-        else
-        {
-            l = m + 1;
-        }
-    }
-    return res;
-}
+    int value, weight;
+    float x;
+};
 
-// mảng này để đến tần xuất của các phần tử < 5.
-// vì các trường hợp ngoại lệ toàn các cặp số có giá trị < 5.
-int cnt[5];
-
-int dem(int y[], int m, int x)
+bool cmp(X a, X b)
 {
-    // Nếu x == 0 thì sẽ không có phần tử trong mảng y[] thỏa mãn điều
-    if (x == 0)
-        return 0;
-
-    // Nếu x == 1 thì chỉ có các cặp (1, 0) thỏa mãn.
-    else if (x == 1)
-        return cnt[0];
-
-    // Còn lại thì các phần tử 0, 1 trong mảng y khi kết hợp với phần tử
-    // x > 1 trong mảng a sẽ tạo ra các cặp thỏa mãn.
-    int ans = cnt[0] + cnt[1];
-
-    // Tìm vị trí đầu tiên trong mảng y mà > x.
-    int i1 = upper(y, 0, m - 1, x);
-
-    // Nếu tìm được chỉ số đầu tiên mà > x thì số phần tử thỏa mãn là m - (chỉ số đó).
-    if (i1 != -1)
-        ans += m - i1;
-
-    // Nếu x == 2 thì sẽ trừ đi các trường hợp ngoại lệ chính là các cặp (2, 3) và (2, 4).
-    if (x == 2)
-        ans = ans - cnt[3] - cnt[4];
-
-    // Và thêm cả cặp (3, 2) nữa vì cặp (3, 2) là cặp duy nhất mà x > y và x^y > y^x.
-    if (x == 3)
-        ans += cnt[2];
-    return ans;
-}
-
-void TC()
-{
-    int n, m;
-    cin >> n >> m;
-    memset(cnt, 0, sizeof(cnt));
-    int x[n], y[m];
-    for (int i = 0; i < n; i++)
-    {
-        cin >> x[i];
-    }
-    for (int i = 0; i < m; i++)
-    {
-        cin >> y[i];
-        if (y[i] <= 4)
-        {
-            cnt[y[i]]++;
-        }
-    }
-    sort(y, y + m);
-    long long ans = 0;
-    for (int i = 0; i < n; i++)
-    {
-        // Cộng kết quả tìm kiếm cho từng x[i] đối với mảng y[].
-        ans += dem(y, m, x[i]);
-    }
-    cout << ans << endl;
+    return a.x > b.x;
 }
 
 int main()
@@ -110,6 +33,27 @@ int main()
     cin >> t;
     while (t--)
     {
-        TC();
+        int n, k;
+        cin >> n >> k;
+        v(X) M(n);
+        FORD(i, 0, n)
+            cin >> M[i].weight >> M[i].value,
+            M[i].x = (float)M[i].weight / M[i].value;
+        sort(all(M), cmp);
+        int sum_value = 0;
+        float sum_weight = 0;
+        int c = 0;
+        FORD(i, 0, n)
+        {
+            if (sum_value <= k)
+            {
+                sum_value += M[i].value;
+                sum_weight += M[i].weight;
+                c = i;
+            }
+        }
+        if (sum_value > k)
+            sum_weight -= (float)(sum_value - k) * M[c].x;
+        cout << setprecision(2) << fixed << sum_weight << endl;
     }
 }
