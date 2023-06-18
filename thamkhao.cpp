@@ -1,59 +1,52 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <iomanip>
+#include <bits/stdc++.h>
 #define ll long long
-#define p(x) pair<x, x>
-#define v(x) vector<x>
-#define FORD(i, l, r) for (int i = l; i < r; i++)
-#define FORE(i, l, r) for (int i = r - 1; i >= 0; i--)
-#define correct(x, y, n, m) (0 <= (x) && (x) < (n) && 0 <= (y) && (y) < (m))
-#define sz size();
-#define all(M) M.begin(), M.end()
-#define f first
-#define s second
-#define pb push_back
-#define pf push_font
+#pragma GCC optimize("Ofast")
+const ll mod = (ll)1e9 + 7;
+#define endl "\n"
+#define maxn 1000006
+#define _oo LLONG_MIN
+#define oo LLONG_MAX - 9
+#define bit(x, i) ((x >> i) & 1)
+#define all(v) v.begin(), v.end()
+#define ms(a) memset(a, 0, sizeof(a))
+#define faster()                  \
+    ios_base::sync_with_stdio(0); \
+    cin.tie(0);                   \
+    cout.tie(0);
 using namespace std;
-
-struct X
+ll n, res = 0;
+bool visited[100001];
+vector<ll> adj[100001];
+void dfs(ll u, ll cnt)
 {
-    int value, weight;
-    float x;
-};
-
-bool cmp(X a, X b)
-{
-    return a.x > b.x;
+    res = max(res, cnt);
+    visited[u] = true;
+    for (auto &x : adj[u])
+    {
+        if (!visited[x])
+            dfs(x, cnt + 1);
+    }
 }
-
 int main()
 {
-    int t;
+    faster();
+    ll t;
     cin >> t;
     while (t--)
     {
-        int n, k;
-        cin >> n >> k;
-        v(X) M(n);
-        FORD(i, 0, n)
-            cin >> M[i].weight >> M[i].value,
-            M[i].x = (float)M[i].weight / M[i].value;
-        sort(all(M), cmp);
-        int sum_value = 0;
-        float sum_weight = 0;
-        int c = 0;
-        FORD(i, 0, n)
+        cin >> n;
+        for (ll i = 1; i <= n - 1; i++)
         {
-            if (sum_value <= k)
-            {
-                sum_value += M[i].value;
-                sum_weight += M[i].weight;
-                c = i;
-            }
+            ll x, y;
+            cin >> x >> y;
+            adj[x].push_back(y);
+            adj[y].push_back(x);
         }
-        if (sum_value > k)
-            sum_weight -= (float)(sum_value - k) * M[c].x;
-        cout << setprecision(2) << fixed << sum_weight << endl;
+        dfs(1, 0);
+        cout << res << endl;
+        res = 0;
+        for (auto &x : adj)
+            x.clear();
+        ms(visited);
     }
 }
