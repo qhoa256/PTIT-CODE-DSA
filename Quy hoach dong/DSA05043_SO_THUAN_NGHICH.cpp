@@ -14,13 +14,14 @@ int main()
 	ios::sync_with_stdio(0);
 	cin.tie(0);
 	cout.tie(0);
-	int t;
+	ll t;
 	cin >> t;
+	cin.ignore(1);
 	while (t--)
 	{
 		string s;
 		cin >> s;
-		ll n = s.size();
+		ll n = s.size(), res = 1;
 		s = "@" + s;
 		ll f[n + 1][n + 1];
 		memset(f, 0, sizeof(f));
@@ -34,15 +35,17 @@ int main()
 				if (s[i] == s[j])
 				{
 					if (k == 2)
-						f[i][j] = 2;
+						f[i][j] = 1;
 					else
-						f[i][j] = f[i + 1][j - 1] + 2;
+					{
+						f[i][j] = f[i + 1][j - 1];
+					}
 				}
-				else
-					f[i][j] = max(f[i + 1][j], f[i][j - 1]);
+				if (f[i][j])
+					res = max(res, j - i + 1);
 			}
 		}
-		cout << n - f[1][n] << endl;
+		cout << res << endl;
 	}
 	return 0;
 }
